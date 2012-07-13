@@ -1,0 +1,33 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "About" %}{% endblock %}
+
+{% block subnav%}
+    <ul class="nav nav-list">
+        <li class="nav-header">{% trans "Options" %}</li>
+        <li><a href="{% url create_unit %}">{% trans "Crear Unidad" %}</a></li>
+        <li><a href="{% url create_role %}">{% trans "Crear Rol" %}</a></li>
+        <li><a href="{% url register %}">{% trans "Registro de Conductores" %}</a></li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <h1>{% trans "Control de Seguridad Fisica" %}</h1>
+    
+    {% if user.is_authenticated %}
+        <p>
+        Esta plataforma realiza el control del personal interno y externo, como tambien el control
+        de los activos fisicos.
+        </p>
+        
+    {% else %}
+        {% url acct_login as login_url %}
+        
+        <p class="what_next">
+            {% blocktrans %}Ingrese sus datos <a href="{{ login_url }}">logging in</a>.{% endblocktrans %}
+        </p>
+    {% endif %}
+{% endblock %}

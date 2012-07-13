@@ -1,0 +1,25 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load bootstrap_tags %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Registro" %}{% endblock %}
+
+{% block body %}
+    <h1>{% trans "Datos del conductor" %}</h1>
+    
+    {% if user.is_authenticated %}
+        <form action="/staff/{{staff_id}}/driver/" method="post" class="form-horizontal">
+            <fieldset>
+                <input type="hidden" value="{{staff_id}}" name="staff">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">{% trans "Done" %}</button>
+                </div>
+            </fieldset>
+        </form>
+    {% else %}
+    {% endif %}
+{% endblock %}

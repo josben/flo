@@ -1,0 +1,24 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load bootstrap_tags %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Unit" %}{% endblock %}
+
+{% block body %}
+    <h1>{% trans "Forumulario para crear unidades" %}</h1>
+    
+    {% if user.is_authenticated %}
+        <form action="{% url create_unit  %}" method="post" class="form-horizontal">
+            <fieldset>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">{% trans "Done" %}</button>
+                </div>
+            </fieldset>
+        </form>
+    {% else %}
+    {% endif %}
+{% endblock %}

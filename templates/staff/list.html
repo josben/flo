@@ -1,0 +1,24 @@
+{% for staff in staff_list.object_list %}
+    {# Each "contact" is a Contact model object. #}
+    {{ staff|upper }}<br />
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if staff_list.has_previous %}
+        <span class="paginate_previous">
+            <a class="paginate_previous" href="?page={{ staff_list.previous_page_number }}">previous</a>
+        </span>
+        {% endif %}
+
+        <span class="current">
+            Page {{ staff_list.number }} of {{ staff_list.paginator.num_pages }}.
+        </span>
+
+        {% if staff_list.has_next %}
+        <span class="paginate_next">
+            <a href="?page={{ staff_list.next_page_number }}">next</a>
+        </span>
+        {% endif %}
+    </span>
+</div>

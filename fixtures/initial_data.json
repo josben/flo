@@ -1,0 +1,10 @@
+[
+    {
+        "pk": 1, 
+        "model": "sites.site", 
+        "fields": {
+            "domain": "Conductores de vehiculos", 
+            "name": "Conductores de vehiculos"
+        }
+    }
+]

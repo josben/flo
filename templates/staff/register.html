@@ -1,0 +1,24 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load bootstrap_tags %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Registro" %}{% endblock %}
+
+{% block body %}
+    <h1>{% trans "Forumulario de reigistro del personal" %}</h1>
+    
+    {% if user.is_authenticated %}
+        <form action="{% url register %}" method="post" class="form-horizontal" enctype="multipart/form-data" class="infotabs accfrm">
+            <fieldset>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">{% trans "Siguiente" %}</button>
+                </div>
+            </fieldset>
+        </form>
+    {% else %}
+    {% endif %}
+{% endblock %}
