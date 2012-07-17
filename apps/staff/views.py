@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from flo.apps.staff.forms import StaffForm, UnitForm, DriverForm, RoleForm
-#from apps.staff.models import Driver, Staff
+from flo.apps.staff.models import Driver, Staff
 #from access.decorators import login_required, logout_required
 
 def staff(request):
