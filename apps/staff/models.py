@@ -70,14 +70,15 @@ class Staff(models.Model):
 #    user = models.OneToOneField(User, primary_key=True)
     first_name = models.CharField(max_length=50, verbose_name=_(u'Nombre'))
     last_name = models.CharField(max_length=50, verbose_name=_(u'Apellido'))
-    type_doc = models.CharField(max_length=2, choices=TYPE_DOCUMENT_CHOICES, verbose_name=(u'Tipo de documento'))
-    value_doc = models.CharField(max_length=15, unique=True, verbose_name=(u'Numero de documento'))
+#    type_doc = models.CharField(max_length=2, choices=TYPE_DOCUMENT_CHOICES, verbose_name=(u'Tipo de documento'))
+    value_ni = models.CharField(max_length=15, unique=True, verbose_name=(u'Numero interno'))
+    value_ci = models.CharField(max_length=15, unique=True, verbose_name=(u'Numero de CI'))
     locale_issue = models.CharField(max_length=2, choices=LOCALE_CHOICES, verbose_name=(u'Lugar de expedicion'))
 
-    job_title = models.CharField(max_length=2, choices=JOB_TITLE_CHOICES, verbose_name=_(u'Grado de instruccion'))
-    job_role = models.CharField(max_length=2, choices=JOB_ROLE_CHOICES, verbose_name=(u'Cargo'))
+#    job_title = models.CharField(max_length=2, choices=JOB_TITLE_CHOICES, verbose_name=_(u'Grado de instruccion'))
+#    job_role = models.CharField(max_length=2, choices=JOB_ROLE_CHOICES, verbose_name=(u'Cargo'))
     unit = models.ForeignKey(Unit, verbose_name=(u'Unidad'))
-    role = models.ForeignKey(Role, verbose_name=(u'Rol'))
+#    role = models.ForeignKey(Role, verbose_name=(u'Rol'))
     avatar = models.ImageField(upload_to=settings.USER_AVATAR_PATH, null=True,
                                blank=True,
                                max_length=settings.MAX_FILEPATH_LENGTH, verbose_name=(u'Foto'))
