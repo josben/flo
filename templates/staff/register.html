@@ -7,7 +7,7 @@
 {% block head_title %}{% trans "Registro" %}{% endblock %}
 
 {% block body %}
-    <h1>{% trans "Forumulario de reigistro del personal" %}</h1>
+    <h1>{% trans "Forumulario de registro del personal" %}</h1>
     
     {% if user.is_authenticated %}
         <form action="{% url register %}" method="post" class="form-horizontal" enctype="multipart/form-data" class="infotabs accfrm">
