@@ -1,10 +1,19 @@
-{% extends "site_base.html" %}
+{% extends "subnav_base.html" %}
 
 {% load i18n %}
 {% load bootstrap_tags %}
 {% load ifsetting_tag %}
 
 {% block head_title %}{% trans "Unit" %}{% endblock %}
+
+{% block subnav%}
+    <ul class="nav nav-list">
+        <li class="nav-header">{% trans "Options" %}</li>
+        <li><a href="{% url staff %}">{% trans "Lista de Personal" %}</a></li>
+        <li><a href="{% url create_unit %}">{% trans "Crear Unidad" %}</a></li>
+        <li><a href="{% url register %}">{% trans "Registro de Conductores" %}</a></li>
+    </ul>
+{% endblock %}
 
 {% block body %}
     <h1>{% trans "Forumulario para crear unidades" %}</h1>
