@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 class Unit(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
     description = models.CharField(max_length=140)
 
     def __unicode__(self):
