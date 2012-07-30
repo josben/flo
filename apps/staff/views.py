@@ -6,8 +6,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 from flo.apps.staff.forms import StaffForm, UnitForm, DriverForm, RoleForm
 from flo.apps.staff.models import Driver, Staff
 #from access.decorators import login_required, logout_required
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def staff(request):
+    print '+++++++++++++++++++++++++++++++++++'
+    print request
+    print '+++++++++++++++++++++++++++++++++++'
     staff_list = Staff.objects.all()
     print staff_list
     return render_to_response('staff.html', {'staff_list': staff_list}, context_instance = RequestContext(request))
@@ -16,6 +21,7 @@ def staff(request):
 #@login_required
 #@logout_required
 #@require_http_methods(['GET', 'POST'])
+@login_required
 def register(request):
     if request.method == 'POST':
         form = StaffForm(request.POST, request.FILES)
@@ -33,6 +39,7 @@ def register(request):
         form = StaffForm()
     return render(request, 'register.html', {'form': form})
 
+@login_required
 def create_unit(request):
     if request.method == 'POST':
         form = UnitForm(request.POST)
@@ -43,6 +50,7 @@ def create_unit(request):
         form = UnitForm()
     return render(request, 'unit.html', {'form': form})
 
+@login_required
 def create_role(request):
     if request.method == 'POST':
         form = RoleForm(request.POST)
@@ -53,6 +61,7 @@ def create_role(request):
         form = UnitForm()
     return render(request, 'role.html', {'form': form})
 
+@login_required
 def register_driver(request, staff_id):
     if request.method == 'POST':
         form = DriverForm(request.POST)
@@ -68,6 +77,7 @@ def register_driver(request, staff_id):
         form = DriverForm()
     return render(request, 'driver_reg.html', {'form': form, 'staff_id': staff_id})
 
+@login_required
 def listing(request):
     staff_list = Staff.objects.all()
     paginator = Paginator(staff_list, 10) # se mostrara 10 por pagina

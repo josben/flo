@@ -3,7 +3,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from flo.apps.staff.models import Staff, Unit, Role, Driver
-
+from django.contrib.admin import widgets
 """
 SALUDATION_CHOICES = (
     ('1', 'Dr'),
@@ -70,6 +70,10 @@ class RoleForm(forms.ModelForm):
         model = Role
 
 class DriverForm(forms.ModelForm):
+    date_issue = forms.DateField(required = True, widget = forms.DateInput(format='%dd/%mm/%yy'),
+            help_text=_('Formato: MM/DD/YY')) #, input_formats='%dd/%mm/%yy')
+    date_expiration = forms.DateField(required = True, widget = forms.DateInput(format='%dd/%mm/%yy'),
+            help_text=_('Formato: MM/DD/YY')) #, input_formats='%dd/%mm/%yy')
     class Meta:
         model = Driver
         exclude = ('staff')

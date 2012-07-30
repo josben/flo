@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{% trans "Forumulario para crear unidades" %}</h1>
+    <h1>{% trans "Formulario para crear unidades" %}</h1>
     
     {% if user.is_authenticated %}
         <form action="{% url create_unit  %}" method="post" class="form-horizontal">

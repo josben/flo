@@ -3,8 +3,22 @@
 {% load i18n %}
 {% load bootstrap_tags %}
 {% load ifsetting_tag %}
-
+{% load adminmedia %}
 {% block head_title %}{% trans "Registro" %}{% endblock %}
+
+<script type="text/javascript">
+    window.__admin_media_prefix__ = "{% filter escapejs %}{% admin_media_prefix %}{% endfilter %}";
+</script>
+
+
+{{ form.media }}
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="/media/admin/js/core.js"></script>
+    <link rel="stylesheet" type="text/css" href="/media/admin/css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/admin/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/admin/css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="/media/admin/css/widgets.css"/>
+{{ form.media }}
 
 {% block body %}
     <h1>{% trans "Datos del conductor" %}</h1>
