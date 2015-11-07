@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+<h2>Detalle del Personal</h2>
+    <div class="row">
+        {% if staff.is_active %}
+        <div class="col-md-4 alert fade in alert-info" align="center">
+        {% else %}
+        <div class="col-md-4 alert fade in alert-danger" align="center">
+            <b>(Personal deshabilitado)</b>
+        {% endif %}
+            <h2>{{ staff }}</h2>
+            <img src="{{ staff.photo.url_200x200}}" width="200" height="200" alt="" />
+        </div>
+        <div class="col-md-4">
+            <label>Telefono:</label> {{ staff.number_phone }}</br>
+            {% if employee %}
+            <label>Item:</label> {{ employee.item }}</br>
+            <label>Corporativo:</label> {{ employee.corporate_number }}</br>
+            <label>Unidad de Trabajo:</label> {{ e_wu.workunit }}</br>
+            <label>Cargo:</label> {{ e_wu.position }}</br>
+            <label>Fecha de ingreso:</label> {{ e_wu.date_joined|date:"d/m/Y" }}</br>
+            {% elif guard %}
+            <label>Empresa:</label> {{ guard.company }}</br>
+            <label>Asignado a:</label> {{ g_bo.branchoffice }}</br>
+            <label>Fecha de ingreso:</label> {{ g_bo.date_joined|date:"d/m/Y" }}</br>
+            <label>Observacion:</label> {{ g_bo.observation }}</br>
+            {% endif %}
+            <label>Acerca de el/ella:</label> {{ staff.number_phone }}
+        </div>
+</div>
+{% endblock %}

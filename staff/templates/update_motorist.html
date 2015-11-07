@@ -1,0 +1,33 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <!-- ul class="nav nav-list">
+        <li class="nav-header">{% trans "Opciones" %}</li>
+    </ul -->
+{% endblock %}
+
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block main-content %}
+  <h4>Actualizando licencia para {{ motorist.employee }}</h4>
+  <form action="{{ url }}/update/" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+      {{ form.driver_category.errors }}
+      <label for="id_subject">Categoria:</label>
+      {{ form.driver_category }}
+    </div>
+    <div class="form-group">
+      {{ form.expiration_date.errors }}
+      <label for="id_subject">Fecha de caducidad de licencia:</label>
+      {{ form.expiration_date }}
+    </div>
+    <input type="submit" value="Guardar" class="btn btn-primary"/>
+</form>
+{% endblock%}
+

@@ -1,0 +1,31 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <!-- ul class="nav nav-list">
+        <li class="nav-header">{% trans "Opciones" %}</li>
+    </ul -->
+{% endblock %}
+
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block main-content %}
+<h4>Borrando el Vehiculo {{ car.internal_number }}</h4>
+<form action="{{ url }}/delete/" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group" id="div_message">
+    </div>
+    <div class="alert fade in alert-danger">
+        {{ form.observation.errors }}
+        <h4>Explique por que se elimina el Vehiculo:</h4>
+        {{ form.observation }}
+    </div>
+
+    <input type="submit" value="Borrar" class="btn btn-primary"/>
+</form>
+{% endblock%}
+

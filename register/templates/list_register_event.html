@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+    {% if branchoffice %}
+        <h2>{% trans "Registro de Vehiculos" %} {{ branchoffice }} {{ day }} </h2>
+    {% else %}
+        <h2>Todos los parqueos {{ day }}</h2>
+    {% endif %}
+    <div class="row">
+        <div class="col-xs-4">
+            <form method="GET"
+                  action="{% url 'search_by_car_event' %}" 
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text'
+                       id='id_car' name='car'
+                       autocomplete='off'
+                       class="form-control" placeholder="Interno de Vehiculo" />
+                <input type='hidden' id='id_event' name='event' value='{{ event }}' />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_driver_event' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_driver' name='driver' autocomplete='off'
+                  class="form-control" placeholder="Item Conductor" />
+                <input type='hidden' id='id_event' name='event' value='{{ event }}' />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_ladder_event' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_ladder' name='ladder' autocomplete='off'
+                       class="form-control" placeholder="Codigo escalera" />
+                <input type='hidden' id='id_event' name='event' value='{{ event }}' />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+    </br>
+    <div class="table-responsive">
+    <table class="table">
+        <tr>
+            {% if both or event == 'both' %}
+                <td><b>Vehiculo</b></td>
+            {% else %}
+                <td class="success"><b>Vehiculo</b></td>
+            {% endif %}
+            <td><b>Fecha</b></td>
+            <td><b>Hora</b></td>
+            <td><b>Conductor</b></td>
+            <td><b>Evento</b></td>
+            <td><b>Km</b></td>
+            <td><b>Escaleras</b></td>
+            <td><b>Guardia</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate registers 20 %}
+        {% for row in registers %}
+            {% if both or event == 'both' %}
+                {% if row.event == 'salida' %}
+                <tr class="success">
+                {% else %}
+                <tr class="info">
+                {% endif %}
+            {% else %}
+            <tr class="active">
+            {% endif %}
+            {% if both %}
+                <td>{{ row.car }}</td>
+            {% else %}
+                <td class="success">{{ row.car }}</td>
+            {% endif %}
+                <td>{{ row.register_date|date:"d/m/Y" }}</td>
+                <td>{{ row.register_time|date:"G:i" }}</td>
+                <td>{{ row.employee }}</td>
+                <td>{{ row.event }}</td>
+                <td>{{ row.register_km }}</td>
+                <td>{{ row.ladders }}</td>
+                <td>{{ row.owner }}</td>
+                <td><a href="{{ row.get_absolute_url }}/view/">Ver</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+    {% paginate %}
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active">
+          <a href="{% url 'list_today_guests' %}">Ingresos del dia</a>
+      </li>
+      <li class="active">
+          <a href="{% url 'list_guests' %}">Ver todos los ingresos</a>
+      </li>
+    </ul>
+    </br>
+    {% if rwe %}
+    <div class="alert fade in alert-danger">
+        <p>Hay <b>{{rwe}}</b> ingreso(s) sin marcar su salida <a href="{% url 'list_guests_without_exit' %}">Ver</a> </p>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block main-content %}
+  <form action="{% url 'guest_form' %}" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+      {{ form.val_document.errors }}
+      <label for="id_subject">Numero de Documento:</label>
+      {{ form.val_document }}
+    </div>
+    <div class="form-group">
+      {{ form.reason.errors }}
+      <label for="id_subject">Motivo de ingreso:</label>
+      {{ form.reason }}
+    </div>
+    <div id="complete_info_guest">
+    </div>
+    <input type="submit" value="Registrar" class="btn btn-primary"/>
+  </form>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block navbar %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Oficinas <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/cars/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Guardias <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'show_guards_enabled' %}">Ver solo habilitados</a></li>
+        <li><a href="{% url 'show_guards_all' %}">Ver todos</a></li>
+        <li class="divider"></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/guards/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endblock%}
+
+{% block content %}
+{% if office %}
+    <h4>Oficina {{ office }}</h4>
+{% else %}
+    <h4>Todos los guardias</h4>
+{% endif %}
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td class="success"><b>CI</b></td>
+            <td class="warning"><b>Fecha de ingreso</b></td>
+            <td><b>Nombre</b></td>
+            <td><b>Empresa</b></td>
+            <td><b>Oficina</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate guards 10 %}
+        {% for guard in guards %}
+            {% if guard.guard.staff.is_active %}
+            <tr class="active" id="row_{{ guard.guard.id }}">
+            {% else %}
+            <tr class="danger" id="row_{{ guard.guard.id }}">
+            {% endif %}
+                <td class="success">{{ guard.guard.staff.val_document }} - {{ guard.guard.staff.locale_issue }}</td>
+                <td class="warning">{{ guard.date_joined|date:"d/m/Y" }}</td>
+                <td>{{ guard.guard.staff }}</td>
+                <td>{{ guard.guard.company }}</td>
+                <td>
+                    {% if user.is_admin %}
+                    <li class="dropdown">
+                        {% if office %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ office }} <span class="caret"></span>
+                            </a>
+                        {% else %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ guard.branchoffice }} <span class="caret"></span>
+                            </a>
+                        {% endif %}
+                        <ul class="dropdown-menu" role="menu">
+                            {% for office in bo_list %}
+                            <li>
+                            <a href="{{office.get_absolute_url }}/guard/{{ guard.guard.id }}/"
+                               onclick="removeRow({{guard.guard.id}});">
+                                    <span>{{ office.name }}</span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% else %}
+                        {% if office %}
+                        {{ office }}
+                        {% else %}
+                        {{ guard.branchoffice }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                {% if user.is_admin %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Opciones <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% if guard.guard.staff.is_user %}
+                            <li>
+                                <a href='{{ guard.guard.staff.get_absolute_url }}/profile/'>Ver perfil</a>
+                            </li>
+                            {% elif guard.guard.staff.is_active %}
+                            <li>
+                                <a href='{{ guard.guard.staff.get_absolute_url }}/create_user/'>
+                                    Crear cuenta
+                                </a>
+                            </li>
+                            <li>
+                                <a href='{{ guard.guard.staff.get_absolute_url }}/disabled/'>
+                                    Quitar Guardia
+                                </a>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href='{{ guard.guard.staff.get_absolute_url }}/enabled/'>
+                                    Habilitar Guardia
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href='{{ guard.guard.staff.get_absolute_url }}/edit/'>
+                                    Editar
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                {% else %}
+                    Sin opciones
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% paginate %}
+<script>
+    function removeRow(item) {
+        $('#row_'+item).remove();
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+
+from django.db import models
+from django.contrib.auth.models import UserManager
+
+from staff.models import Staff
+
+from django.utils.translation import ugettext as _
+
+class User(models.Model):
+    staff = models.ForeignKey(Staff, unique=True, related_name=_('staff'), blank=True, null=True)
+    username = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=120)
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField()
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+

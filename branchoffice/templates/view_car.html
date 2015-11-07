@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block navbar %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Oficinas <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/cars/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Guardias <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        <li><a href="{% url 'show_guards_all' %}">Ver todos</a></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/guards/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endblock%}
+
+{% block content %}
+<h4>Vehiculo: {{ car.internal_number }}</h4>
+<b>Oficina:</b> {{ car.branchoffice }}</br>
+<b>Fecha de incorporacion:</b> {{ car.date_joined|date:"G:i" }}</br>
+<b>Fecha de eliminacion:</b> {{ car.date_en|date:"G:i" }}</br>
+<b>Tipo de Vehiculo:</b> {{ car.type_motorized }}</br>
+<b>Numero interno:</b> {{ car.internal_number }}</br>
+<b>Traccion:</b> {{ car.traction }}</br>
+<b>Placa de control:</b> {{ car.license_plate }}</br>
+<b>Modelo:</b> {{ car.model_year }}</br>
+<b>Marca:</b> {{ car.manufacturer }}</br>
+<b>Color:</b> {{ car.color }}</br>
+<b>Cilindrada:</b> {{ car.cylinder_capacity }}</br>
+<b>Chasis:</b> {{ car.chassis }}</br>
+<b>Numero de motor:</b> {{ car.number_engine }}</br>
+<b>Kilometraje actual:</b> {{ car.current_km }}</br>
+{% if car.is_active %}
+    <b>Activo:</b> Si
+{% else %}
+    <b>Activo:</b> No
+{% endif %}
+</br>
+{% if car.revert_km %}
+    <b>Giro del reloj del KM:</b> Si
+{% else %}
+    <b>Giro del reloj del KM:</b> No
+{% endif %}
+</br>
+{% if car.is_deleted %}
+    <div class="col-xs-4 alert fade in alert-danger">
+        <b>Borrado:</b> Si</br>
+        <b>Observaciones:</b></br>
+        {% for key, value in observation.items %}
+            <b>{{ key }}: </b> {{ value }}</br>
+        {% endfor %}
+    </div>
+{% else %}
+    <b>Borrado:</b> No</br>
+    <b>Observaciones:</b> {{ observation }}
+{% endif %}
+
+{% endblock %}

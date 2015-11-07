@@ -1,0 +1,60 @@
+
+{% extends "subnav_base.html"%}
+
+{% block main-content %}
+  <div class="bs-callout bs-callout-warning">
+    {% if event == 'salida' %}
+        <h4>Editando registro de Salida del Vehiculo {{ car }}</h4>
+    {% else %}
+        <h4>Editando registro de Entrada del Vehiculo {{ car }}</h4>
+    {% endif %}
+  </div>
+  <form action="{{ url }}" method="POST">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <input type="hidden" value="{{ register_id }}" id="id_register" name="register" />
+    <div class="form-group">
+      <label for="id_subject">Conductor registrado:</label>
+      {{ form.instance.employee.item }}
+    </div>
+    <div class="form-group">
+      {{ form.employee.errors }}
+      <label for="id_subject">Cambiar conductor:</label>
+      <input type="text" value="{{ form.instance.employee.item }}"
+             id="id_employee" name="employee"
+             class="form-control"
+             required="True"
+             placeholder="Item del conductor"
+             autocomplete="off" />
+    </div>
+    <div class="alert fade in alert-warning">
+        <h4>Tiene que modificar ambas fechas</h4>
+        <div class="form-group">
+            {{ form.register_date.errors }}
+            <label for="id_subject">Fecha de registro:</label>
+            {{ form.register_date }}
+        </div>
+        <div class="form-group">
+            {{ form.register_time.errors }}
+            <label for="id_subject">Fecha y hora de registro:</label>
+            {{ form.register_time }}
+        </div>
+    </div>
+    <div class="form-group">
+      {{ form.register_km.errors }}
+      <label for="id_subject">Kilometraje:</label>
+      {{ form.register_km }}
+    </div>
+    <div class="form-group">
+      {{ form.ladders.errors }}
+      <label for="id_subject">Escaleras:</label>
+      {{ form.ladders }}
+    </div>
+    <div class="form-group">
+      {{ form.observation.errors }}
+      <label for="id_subject">Observaciones:</label>
+      {{ form.observation }}
+    </div>
+
+    <input type="submit" value="Guardar" class="btn btn-primary"/>
+  </form>
+{% endblock %}

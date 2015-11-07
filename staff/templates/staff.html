@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+    <!-- a href="{% url "upload_staff" %}">Cargar el personal</a>
+    <a href="{% url "upload_driver" %}">Cargar a los conductores de vehiculos</a -->
+        <h2>Todo el personal</h2>
+    <div class="row">
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_name_staff' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_staff' name='staff' autocomplete='off'
+                  class="form-control" placeholder="Nombre" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+    </br>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <td><b></b></td>
+                <td><b>Nombre</b></td>
+                <td><b>Apellido</b></td>
+                <td><b>Fecha de creacion</b></td>
+                <td><b>Telefono</b></td>
+                <td><b>Opciones</b></td>
+            </tr>
+            {% autopaginate staff_list 15 %}
+            {% for staff in staff_list %}
+                {% if staff.is_active and staff.is_user %}
+                <tr class="info">
+                {% elif not staff.is_employee and not staff.is_guard %}
+                <tr class="warning">
+                {% elif not staff.is_active %}
+                <tr class="danger">
+                {% else %}
+                <tr class="active">
+                {% endif %}
+                    <td>
+                        <img src="{{ staff.photo.url_48x48 }}" width="48" height="48" alt="" />
+                    </td>
+                    <td>{{ staff.first_name }}</td>
+                    <td>{{ staff.last_name }}</td>
+                    <td>{{ staff.date_joined|date:"d/m/Y" }}</td>
+                    <td>{{ staff.number_phone }}</td>
+                    <td>
+                        {% if user.is_admin %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Opciones <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% if not staff.is_employee and not staff.is_guard %}
+                                <li>
+                                    <a href='{{ staff.get_absolute_url }}/create_employee/'>Crear Empleado</a>
+                                </li>
+                                <li>
+                                    <a href='{{ staff.get_absolute_url }}/create_guard/'>Crear Guardia</a>
+                                </li>
+                                {% endif %}
+                                {% if staff.is_active %}
+                                    {% if staff.is_user %}
+                                        <li>
+                                            <a href='{{ staff.get_absolute_url }}/profile/'>Ver perfil</a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href='{{ staff.get_absolute_url }}/create_user/'>Crear cuenta</a>
+                                        </li>
+                                    {% endif %}
+                                    <li>
+                                        <a href='{{ staff.get_absolute_url }}/disabled/'>Deshabilitar</a>
+                                    </li>
+                                    <li>
+                                        <a href='{{ staff.get_absolute_url }}/edit/'>Editar</a>
+                                    </li>
+                                    <li>
+                                        <a href='{{ staff.get_absolute_url }}/detail/'>Ver detalle</a>
+                                    </li>
+                                {% else %}
+                                <li>
+                                    <a href='{{ staff.get_absolute_url }}/enabled/'>Habilitar</a>
+                                </li>
+                                <li>
+                                    <a href='{{ staff.get_absolute_url }}/detail/'>Ver detalle</a>
+                                </li>
+
+                                {% endif %}
+                            </ul>
+                        </li>
+                        {% else %}
+                            <a href='{{ staff.get_absolute_url }}/detail/'>Ver detalle</a>
+                        {% endif %}
+                        </li>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% paginate %}
+
+{% endblock %}

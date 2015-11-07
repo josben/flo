@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+<h4>Taller: {{ workshop.workshop }}</h4>
+<b>Numero interno del Vehiculo:</b> {{ workshop.car.internal_number }}</br>
+<b>Placa del Vehiculo:</b> {{ workshop.car.license_plate }}</br>
+<b>Fecha de ingreso:</b> {{ workshop.date_joined|date:"d/m/Y" }}</br>
+<b>Problema:</b> {{ workshop.car.problem_description }}</br>
+{% if workshop.fixed %}
+<b>Fecha de salida:</b> {{ workshop.date_out|date:"d/m/Y" }}</br>
+{% else %}
+    {% if user.is_admin %}
+    <a class="btn btn-warning"
+    role="button"
+    href="{{ workshop.get_absolute_url }}/fixed/">Sacar del taller</a>
+    {% else %}
+    <b>Fecha de salida:</b> Sigue en taller
+    {% endif %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2>{% trans "Registro de Vehiculos" %} {{ branchoffice }} {{ day }} </h2>
+    <table class="table">
+        <tr>
+            <td>Evento</td>
+            <td>Conductor</td>
+            <td>Vehiculo</td>
+            <td>Hora de registro</td>
+            <td>Kilometraje</td>
+            <td>Escaleras</td>
+            <td>Observacion</td>
+        </tr>
+        {% autopaginate registers 10 %}
+        {% for row in registers %}
+            <tr>
+                <td>{{ row.event }}</td>
+                <td>{{ row.employee }}</td>
+                <td>{{ row.car }}</td>
+                <td>{{ row.register_time }}</td>
+                <td>{{ row.register_km }}</td>
+                <td>{{ row.ladders }}</td>
+                <td>{{ row.observation }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% paginate %}
+</div>
+{% endblock %}

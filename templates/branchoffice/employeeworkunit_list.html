@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+    <!-- a href="{% url "upload_staff" %}">Cargar el personal</a>
+    <a href="{% url "upload_driver" %}">Cargar a los conductores de vehiculos</a -->
+        <h2>Personal</h2>
+    <div class="row">
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_item' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_item' name='item' autocomplete='off'
+                  class="form-control" placeholder="Item Empleado" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_name_employee' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_employee' name='employee' autocomplete='off'
+                  class="form-control" placeholder="Nombre del Empleado" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+    </br>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <td><b></b></td>
+                <td><b>Item</b></td>
+                <td><b>Nombre</b></td>
+                <td><b>Cargo</b></td>
+                <td><b>Unidad de Trabajo</b></td>
+            </tr>
+            {% autopaginate object_list 15 %}
+            {% for staff in object_list %}
+                <tr class="active">
+                    <td>
+                        <img src="{{staff.employee.staff.photo.url_48x48}}" width="48" height="48" alt="" />
+                    </td>
+                    <td>{{ staff.employee.item }}</td>
+                    <td>{{ staff.employee }}</td>
+                    <td>{{ staff.position }}</td>
+                    <td>{{ staff.workunit }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% paginate %}
+
+{% endblock %}

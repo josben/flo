@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block messages %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 sidebar" id="sidebar">
+                {% block sidebar %}
+                {% endblock %}
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
+                {% include "messages.html" %}
+
+                {% block main-content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

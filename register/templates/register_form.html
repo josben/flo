@@ -1,0 +1,135 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <!-- ul class="nav nav-list">
+        <li class="nav-header">{% trans "Opciones" %}</li>
+    </ul -->
+{% endblock %}
+
+
+{% block navbar_right %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Opciones <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="{% url 'form_foreign_register_car' %}">
+                <span>{% trans 'Vehiculos externos'%}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'last_registers' %}">
+                <span>{% trans 'Ultimos registros'%}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'registers_all' %}">
+                <span>{% trans 'Todos los registros'%}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block main-content %}
+  <form action="{% url 'form_register_car' %}" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.register_date.errors }}
+    <div class="bs-callout bs-callout-warning">
+        <h4>Los registros se guardaran con fecha:</h4>
+        {% if request.session.stick_date %}
+            <b>{{ stick_date.date }}</b>
+            <input type="hidden" value="{{ request.session.stick_date }}" id="rdatecurrent" />
+        {% else %}
+            <b>{{ today }}</b>
+        {% endif %}
+        <a href="#" class="glyphicon glyphicon-calendar"
+           data-toggle="collapse" data-target="#register_date_collapse"
+           id="change_date">
+        </a>
+        <div class="collapse" id="register_date_collapse">
+            </br>
+            <div class="input-group date" id="register_date">
+                {{ form.register_date }}
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#id_register_date').datetimepicker({pickTime: false});
+                });
+            </script>
+            <div class="has-error">
+                <div class="radio">
+                    <label class="checkbox">
+                    {% if request.session.stick_date %}
+                        <input type="checkbox" id="stick_date" name="stick_date" checked="True">
+                            Mantener esta fecha para los registros
+                        </input></br>
+                    {% else %}
+                        <input type="checkbox" id="stick_date" name="stick_date">
+                            Mantener esta fecha para los registros
+                        </input>
+                    {% endif %}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" id="div_message">
+    </div>
+    <div class="form-group">
+      {{ form.car.errors }}
+      <label for="id_subject">Interno del vehiculo:</label>
+      {{ form.car }}
+    </div>
+    <div class="form-group" id="div_maintenance">
+    </div>
+    <div class="form-group">
+      {{ form.employee.errors }}
+      <label for="id_subject">Item conductor:</label>
+      {{ form.employee }}
+    </div>
+    <div class="form-group">
+        {{ form.time.errors }}
+        <label for="id_subject">Hora de registro:</label>
+        <div class='input-group date' id='datetimepicker4'>
+            {{ form.time }}
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+            </span>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker4').datetimepicker({
+                    pickDate: false
+                });
+//                $('#id_time').val(getTime());
+            });
+        </script>
+    </div>
+    <div class="form-group" id="div_km_revert">
+    </div>
+    <div class="form-group">
+      {{ form.km.errors }}
+      <label for="id_subject">Kilometraje:</label>
+      {{ form.km }}
+    </div>
+    <div class="form-group">
+      {{ form.ladders.errors }}
+      <label for="id_subject">Escaleras:</label>
+      {{ form.ladders }}
+    </div>
+    <div class="form-group">
+      {{ form.observation.errors }}
+      <label for="id_subject">Observaciones:</label>
+      {{ form.observation }}
+    </div>
+    <input type="submit" value="Registrar" class="btn btn-primary"/>
+</form>
+{% endblock%}

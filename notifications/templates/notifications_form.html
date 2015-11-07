@@ -1,0 +1,50 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <!-- ul class="nav nav-list">
+        <li class="nav-header">{% trans "Opciones" %}</li>
+    </ul -->
+{% endblock %}
+
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block main-content %}
+<h2>Enviar notificacion</h2>
+  <form action="{% url 'new_notification' %}" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group" id="div_message">
+    </div>
+    <div class="form-group">
+      {{ form.priority.errors }}
+      <label for="id_subject">Prioridad:</label>
+      {{ form.priority }}
+    </div>
+    <div class="form-group">
+      {{ form.type_notification.errors }}
+      <label for="id_subject">Tipo de notificacion:</label>
+      {{ form.type_notification }}
+    </div>
+    <div class="form-group">
+      {{ form.abstract.errors }}
+      <label for="id_subject">Resumen:</label>
+      {{ form.abstract }}
+    </div>
+    <div class="form-group">
+        {{ form.description.errors }}
+        <label for="id_subject">Descripcion detallada:</label>
+        {{ form.description }}
+    </div>
+    <div class="form-group">
+        {{ form.owner.errors }}
+        <label for="id_subject">Para:</label>
+        {{ form.owner }}
+    </div>
+    <input type="submit" value="Enviar" class="btn btn-primary"/>
+</form>
+{% endblock%}
+

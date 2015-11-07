@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+
+{% block content %}
+<h4>Mantenimientos Programados de Vehiculos</h4>
+<div class="row">
+    <div class="col-xs-4">
+        <form method="GET"
+                action="{% url 'search_maintenance_program' %}" 
+                class="form-inline" role="form">{% csrf_token %}
+            <input type='text'
+                    id='id_car' name='car'
+                    autocomplete='off'
+                    class="form-control" placeholder="Interno de Vehiculo" />
+            <button type='submit' class="btn btn-default">
+                Buscar
+            </button>
+        </form>
+    </div>
+</div>
+</br>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td class="info"><b>Taller</b></td>
+            <td><b>Vehiculo</b></td>
+            <td><b>Ultimo mantenimiento</b></td>
+            <td><b>Km</b></td>
+            <td><b>Fecha programada</b></td>
+            <td><b>Km programado</b></td>
+            <td><b>Motivo</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate mp_list 20 %}
+        {% for m in mp_list %}
+            {% if not m.is_closed %}
+            <tr class="success" id="row_{{ m.id }}">
+            {% else %}
+            <tr class="active" id="row_{{ m.id }}">
+            {% endif %}
+                <td class="info">{{ m.workshop }}</td>
+                <td>{{ m.car.internal_number }}</td>
+                <td>{{ m.last_date_maintenance|date:"d/m/Y" }}</td>
+                <td>{{ m.last_km_maintenance }}</td>
+                <td>{{ m.next_date_maintenance|date:"d/m/Y" }}</td>
+                <td>{{ m.next_km_maintenance }}</td>
+                <td>{{ m.reason }}</td>
+                <td>
+                    {% if user.is_admin %}
+                        {% if not m.is_closed %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Opciones <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                <a href="{{m.get_absolute_url }}/close/">
+                                        <span>Cancelar</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Opciones <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                <a href="{{m.get_absolute_url }}/open/">
+                                        <span>Habilitar</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        {% endif %}
+                    {% else %}
+                        ---
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% paginate %}
+{% endblock %}

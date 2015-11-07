@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+<h4>Lista de Usuarios</h4>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td class="success"><b>Nombre de Usuario</b></td>
+            <td class="warning"><b>Fecha de creacion</b></td>
+            <td><b>Nombre</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate users 10 %}
+        {% for user in users %}
+            {% if user.is_active %}
+            <tr class="active" id="row_{{ user.id }}">
+            {% else %}
+            <tr class="danger" id="row_{{ user.id }}">
+            {% endif %}
+                {% if user.is_admin %}
+                <td class="success">{{ user.username }} <b>(admin)</b></td>
+                {% else %}
+                <td class="success">{{ user.username }}</td>
+                {% endif %}
+                <td class="warning">{{ user.date_joined|date:"d/m/Y" }}</td>
+                <td>{{ user.staff }}</td>
+                <td>
+                    <li class="dropdown">
+                        {% if user.is_superuser %}
+                            ---
+                        {% elif user.is_active %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Habilitado <span class="caret"></span>
+                            </a>
+                        {% else %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Deshabilitado <span class="caret"></span>
+                            </a>
+                        {% endif %}
+                        <ul class="dropdown-menu" role="menu">
+                            {% if user.is_active %}
+                                <li>
+                                    <a href="{{ user.get_absolute_url }}/disabled/">
+                                        <span>Deshabilitar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ user.get_absolute_url }}/change_password/">
+                                        <span>Cambiar password</span>
+                                    </a>
+                                </li>
+                                <li>
+                                {% if user.is_admin %}
+                                    <a href="{{ user.get_absolute_url }}/admin/">
+                                        <span>Quitar admin</span>
+                                    </a>
+                                </li>
+                                {% else %}
+                                    <a href="{{ user.get_absolute_url }}/admin/">
+                                        <span>Hacer admin</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                            {% else %}
+                            <li>
+                                <a href="{{ user.get_absolute_url }}/enabled/">
+                                    <span>Habilitar</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% paginate %}
+
+{% endblock %}

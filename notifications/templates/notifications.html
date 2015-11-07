@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+    <h2>{% trans "Notificaciones recibidas" %} </h2>
+    <div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td><b>Prioridad</b></td>
+            <td><b>Envia</b></td>
+            <td><b>Fecha</b></td>
+            <td><b>Resumen</b></td>
+            <td><b>Descripcion</b></td>
+            <td><b>Tipo</b></td>
+        </tr>
+        {% autopaginate notifications 20 %}
+        {% for row in notifications %}
+            {% if row.priority == 1 and not row.is_closed %}
+                <tr class="danger">
+            {% elif row.priority == 2 and not row.is_closed %}
+                <tr class="warning">
+            {% elif row.priority == 3 and not row.is_closed %}
+                <tr class="info">
+            {% else %}
+                <tr class="active">
+            {% endif %}
+                <td>{{ row.get_priority }}</td>
+                <td>{{ row.sender }}</td>
+                <td>{{ row.notification.date_created|date:"d/m/Y" }}</td>
+                <td>{{ row.notification.abstract }}</td>
+                <td>{{ row.notification.description }}</td>
+                <td>{{ row.notification.get_type_notification }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+    {% paginate %}
+{% endblock %}

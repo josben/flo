@@ -1,0 +1,56 @@
+
+{% if guest %}
+  <div class="form-group alert fade in alert-info">
+    {% if guest.gender == 'M' %}
+      <b>Bienvenida</b> {{ guest }}
+    {% else %}
+      <b>Bienvenido</b> {{ guest }}
+    {% endif %}
+  </div>
+{% else %}
+  <div class="form-group alert fade in alert-info">
+    <h4 align="center">Complete los datos de la persona</h4>
+    <div class="form-group">
+      <label for="id_subject">Tipo de Documento:</label>
+      <select id="id_type_document" class="form-control" name="type_document">
+        <option value="CI">Carne de identidad</option>
+        <option value="CIE">C.I. extranjero</option>
+        <option value="PSP">Pasaporte</option>
+        <option value="LM">Libreta militar</option>
+        <option value="OTR">Otros</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="id_subject">Expedido:</label>
+      <select name="city" id="id_city" class="form-control">
+        <option value="cba">Cochabamba</option>
+        <option value="lpz">La Paz</option>
+        <option value="scz">Santa Cruz</option>
+        <option value="pnd">Pando</option>
+        <option value="ben">Beni</option>
+        <option value="oru">Oruro</option>
+        <option value="pts">Potosi</option>
+        <option value="tja">Tarija</option>
+        <option value="scr">Chuquisaca</option>
+        <option value="---">Otro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="id_subject">Sexo:</label>
+      <select name="gender" id="id_gender" class="form-control">
+        <option value="H">Hombre</option>
+        <option value="M">Mujer</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="id_subject">Nombre:</label>
+      <input type="text" name="first_name" id="id_first_name"
+             class="form-control" required="True" />
+    </div>
+    <div class="form-group">
+      <label for="id_subject">Apellido:</label>
+      <input type="text" name="last_name" id="id_last_name"
+             class="form-control" required="True" />
+    </div>
+  </div>
+{% endif %}

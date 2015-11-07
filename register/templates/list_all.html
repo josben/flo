@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+    {% if branchoffice %}
+        <h2>{% trans "Registro de Vehiculos" %} {{ branchoffice }} {{ day }} </h2>
+    {% else %}
+        <h2>Todos los parqueos</h2>
+    {% endif %}
+    <div class="row">
+        <div class="col-xs-4">
+            <form method="GET"
+                  action="{% url 'search_by_car' %}" 
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text'
+                       id='id_car' name='car'
+                       autocomplete='off'
+                       class="form-control" placeholder="Interno de Vehiculo" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_driver' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_driver' name='driver' autocomplete='off'
+                  class="form-control" placeholder="Item Conductor" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_ladder' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_ladder' name='ladder' autocomplete='off'
+                       class="form-control" placeholder="Codigo escalera" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+    </br>
+    <div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td class="success"><b>Vehiculo</b></td>
+            <td><b>Fecha</b></td>
+            <td><b>Conductor</b></td>
+            <td><b>Salida</b></td>
+            <td align="center"><b>Km.</b></td>
+            <td><b>Retorno</b></td>
+            <td align="center"><b>Km.</b></td>
+            <td align="center"><b>Recorrido</b></td>
+            <td><b>Escaleras</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate registers 20 %}
+        {% for row in registers %}
+            {% if row.km_out > row.km_in%}
+            <tr class="alert-danger">
+            {% elif not row.km_in %}
+            <tr class="danger">
+            {% elif row.custody_out != row.custody_in %}
+            <tr class="warning">
+            {% elif row.time_out.date != row.time_in.date %}
+            <tr class="info">
+            {% else %}
+            <tr class="active">
+            {% endif %}
+                <td class="success">{{ row.car }}</td>
+                <td>{{ row.register_date|date:"d/m/Y" }}</td>
+                <td>{{ row.custody_out }}</td>
+                {% if row.time_out.date == row.time_in.date %}
+                    <td>{{ row.time_out|date:"G:i" }}</td>
+                    <td>{{ row.km_out }}</td>
+                    <td>{{ row.time_in|date:"G:i" }}</td>
+                {% else %}
+                    <td>{{ row.time_out|date:"d/m/Y G:i" }}</td>
+                    <td>{{ row.km_out }}</td>
+                    <td>{{ row.time_in|date:"d/m/Y G:i" }}</td>
+                {% endif %}
+                <td>{{ row.km_in }}</td>
+                <td align="center">{{ row.get_diff_km }}</td>
+                <td>{{ row.ladders_out }}</td>
+                <td><a href="{{ row.get_absolute_url }}/view/both/">Ver</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+    {% paginate %}
+{% endblock %}

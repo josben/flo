@@ -1,0 +1,34 @@
+
+{% extends "subnav_base.html" %}
+
+{% block sidebar %}
+    <ul class="nav nav-list">
+      <li class="nav-header">
+          <a href="{{ register.get_absolute_url }}/edit/">Editar este registro</a>
+      </li>
+    </ul>
+{% endblock %}
+
+{% block main-content %}
+    <div class="row">
+        <div class="col-md-6 alert fade in alert-info" align="center">
+        <b>Conductor</b>
+        <h2>{{ register.employee }}</h2>
+            <img src="{{register.employee.staff.photo.url_90x90}}" width="90" height="90" alt="">
+            {% if register.employee.is_motorist %}</br>
+            <b>Valides de licencia:</b> {{ register.employee.get_motorist.expiration_date }}</br>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <b>Interno del vehiculo:</b> {{ register.car }}</br>
+            <b>Oficina:</b> {{ register.branch_office }}</br>
+            <b>Fecha de registro:</b> {{ register.register_date }}</br>
+            <b>Hora de registro:</b> {{ register.register_time|date:"G:i" }}</br>
+            <b>Kilometraje registrado:</b> {{ register.register_km }}</br>
+            <b>Escaleras:</b> {{ register.ladders }}</br>
+            <b>Evento:</b> {{ register.event }}</br>
+            <b>Observaciones:</b> {{ register.observation }}</br>
+            <b>Responsable de registro:</b> {{ register.owner }}</br>
+        </div>
+    </div>
+{% endblock %}

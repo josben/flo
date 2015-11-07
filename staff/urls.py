@@ -1,0 +1,28 @@
+from django.conf.urls import patterns, url
+from staff import views
+
+urlpatterns = patterns('',
+    url(r'^$', views.index, name='staff'),
+    url(r'^search/name/', views.searchStaffByName, name='search_by_name_staff'),
+    url(r'^employee/', views.listEmployee, name='staff_comteco'),
+    url(r'^only_staff/', views.onlyStaff, name='only_staff'),
+    url(r'^motorist/$', views.getMotorist, name='motorist_comteco'),
+    url(r'^motorist/(?P<motorist_id>\d+)/update/$', views.updateMotorist, name='update_motorist'),
+    url(r'^search/motorist/item/', views.searchMotoristByItem, name='search_motorist_by_item'),
+    url(r'^search/motorist/name/', views.searchMotoristByName, name='search_motorist_by_name_employee'),
+    #url(r'^all/', views.EmployeeWorkUnitListView.as_view(), name='staff_all'),
+    url(r'^add_staff/', views.addStaff, name='add_staff'),
+    url(r"^(?P<staff_id>\d+)/edit/$", views.editStaff, name="edit_staff"),
+    url(r"^(?P<staff_id>\d+)/detail/$", views.detailStaff, name="detail_staff"),
+    url(r"^(?P<staff_id>\d+)/enabled/$", views.enableDisableStaff, name="enabled_staff"),
+    url(r"^(?P<staff_id>\d+)/disabled/$", views.enableDisableStaff, name="disabled_staff"),
+    url(r"^(?P<staff_id>\d+)/create_user/$", views.addUser, name="add_user"),
+    url(r"^(?P<staff_id>\d+)/create_employee/$", views.addEmployee, name="add_employee"),
+    url(r"^(?P<staff_id>\d+)/create_guard/$", views.addGuard, name="add_guard"),
+    url(r"^(?P<staff_id>\d+)/profile/$", views.viewProfile, name="view_profile_staff"),
+    url(r"^employee/(?P<employee_id>\d+)/detail/$", views.detailEmployee, name="detail_employee"),
+    url(r'^upload_staff', views.uploadStaff, name='upload_staff'),
+    url(r'^upload_driver', views.uploadDriver, name='upload_driver'),
+    url(r'^search/item/', views.searchByItem, name='search_by_item'),
+    url(r'^search/employee/name/', views.searchEmployeeByName, name='search_by_name_employee'),
+)

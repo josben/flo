@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load pagination_tags %}
+
+{# load i18n #}
+
+{% block content %}
+    </br>
+    <div class="well">
+        {% if user.is_authenticated %}
+        <div class="row">
+            <div class="col-xs-2" align="center">
+                <img src="{{user.staff.photo.url_90x90}}" width="90" height="90" alt="" />
+            </div>
+            <h1>Bienvenido {{ user }}!</h1>
+            {% if profile.about %}
+                <p>{{ profile.about }}</p>
+            {% else %}
+                <p>
+                    Plataforma web para la unidad de <b>Seguridad Industrial.</b>
+                </p>
+            {% endif %}
+        </div>
+        {% else %}
+        <h1>Bienvenido!</h1>
+        <p>
+            Plataforma web para realizar control de ingresos.
+        </p>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-xs-5 well">
+            <h2>Notificaciones</h2>
+            {% if notifications %}
+                <table class="table">
+                {% autopaginate notifications 10 %}
+                {% for notification in notifications %}
+                    {% if not notification.is_closed %}
+                        {% if notification.priority == 1 %}
+                        <tr class="danger" id="row_{{notification.id}}">
+                        {% elif notification.priority == 2 %}
+                        <tr class="warning" id="row_{{notification.id}}">
+                        {% else %}
+                        <tr class="info" id="row_{{notification.id}}">
+                        {% endif %}
+                    {% else %}
+                        <tr class="bg-success" id="row_{{notification.id}}">
+                    {% endif %}
+                        <td>
+                            {{ notification.notification.abstract }} <b>({{ notification.sender }})</b>
+                        </td>
+                        <td>
+                            <a href="javascript:viewNotification({{notification.id}})"
+                            onclick="removeRow({{notification.id}});">Ver &raquo;</a>
+                        </td>
+                    </tr>
+                {% endfor%}
+                </table>
+                {% paginate %}
+            {% else %}
+                <p>No hay Notificaciones</p>
+            {% endif %}
+            <p><a class="btn btn-primary" href="{% url 'notifications' %}">Ver recibidos &raquo;</a>
+            <a class="btn btn-primary" href="{% url 'my_notifications' %}">Ver enviados &raquo;</a>
+            {% if user.is_admin %}
+            <a class="btn btn-success" href="{% url 'new_notification_admin' %}">Hacer una &raquo;</a>
+            {% else %}
+            <a class="btn btn-success" href="{% url 'new_notification' %}">Hacer una &raquo;</a>
+            {% endif %}
+            </p>
+        </div>
+        <div class="col-xs-5" id="view_notification">
+        </div>
+    </div>
+    {% endif %}
+<script>
+    function removeRow(item) {
+        $('#row_'+item).remove();
+    }
+</script>
+
+{% endblock %}

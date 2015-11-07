@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block navbar %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Oficinas <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/cars/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Guardias <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'show_guards_enabled' %}">Ver solo habilitados</a></li>
+        <li><a href="{% url 'show_guards_all' %}">Ver todos</a></li>
+        <li class="divider"></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/guards/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endblock%}
+
+{% block content %}
+    <!-- a href="{% url "upload_car" %}">Cargar los vehiculos</a>
+    <a href="{% url "load_car_to_office" %}">Cargar vehiculos a las sucursales</a>
+    <a href="{% url "upload_ladders" %}">Cargar escaleras</a -->
+    <h2>Oficinas de la empresa</h2>
+    <div class="row">
+        {% if user.is_admin %}
+        <div class="col-xs-2">
+            <a class="btn btn-warning"
+                href="{% url 'new_branchoffice' %}"
+                role="button"><b>Nueva oficina &raquo;</b>
+            </a>
+        </div>
+        <div class="col-xs-2">
+            <a class="btn btn-warning"
+                href="{% url 'new_car_branchoffice' %}"
+                role="button"><b>Nuevo Vehiculo &raquo;</b>
+            </a>
+        </div>
+        {% endif %}
+        <div class="col-xs-2">
+            <a class="btn btn-warning"
+                href="{% url 'list_all_car' %}"
+                role="button"><b>Ver todos los autos &raquo;</b>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        {% for office in bo_list %}
+            <div class="col-md-4">
+                <h2>{{ office.name }}</h2>
+                {% if office.description %}
+                    <p>{{ office.description }}</p>
+                {% else %}
+                    <p>Sin descripcion</p>
+                {% endif %}
+                <p>
+                    <a class="btn btn-primary"
+                       href="{{ office.get_absolute_url }}/cars/"
+                       role="button">Ver autos &raquo;
+                    </a>
+                    <a class="btn btn-success"
+                       href="{{ office.get_absolute_url }}/guards/"
+                       role="button">Ver guardias &raquo;
+                    </a>
+                </p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

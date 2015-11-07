@@ -1,0 +1,11 @@
+Django==1.6
+django-bootstrap-toolkit
+django-bootstrap3-datetimepicker
+https://github.com/josben/django-userena/archive/master.zip
+django-thumbs
+django-pagination
+xlrd
+distribute==0.7.3
+mysql-python
+reportlab
+pisa

@@ -1,0 +1,4 @@
+--requirement=base.txt
+django-coverage==1.2.4
+coverage==3.7
+south==0.8.3

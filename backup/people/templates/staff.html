@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load bootstrap_toolkit %}
+{% load staticfiles %}}
+
+{% block content %}
+    <a href="{% url "upload_staff" %}">Cargar el personal</a>
+    <a href="{% url "upload_driver" %}">Cargar a los conductores de vehiculos</a>
+    <table class="table">
+      {% for staff in staff_list %}
+      <tr>
+          <td>
+              <img src="{{staff.photo.url_48x48}}" width="48" height="48" alt="">
+          </td>
+          <td>{{ staff.first_name }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    {{ staff_list|pagination }}
+{% endblock %}

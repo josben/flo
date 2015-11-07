@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block content %}
+    <!-- a href="{% url "upload_car" %}">Cargar los vehiculos</a>
+    <a href="{% url "load_car_to_office" %}">Cargar vehiculos a las sucursales</a>
+    <a href="{% url "upload_ladders" %}">Cargar escaleras</a -->
+    <h2>Talleres de la empresa</h2>
+    <div class="row">
+        {% if user.is_admin %}
+        <div class="col-xs-2">
+            <a class="btn btn-warning"
+                href="{% url 'new_workshop' %}"
+                role="button"><b>Nuevo Taller &raquo;</b>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        {% for workshop in w_list %}
+            {% if workshop.is_active %}
+            <div class="col-md-4 ">
+                <h2>{{ workshop.branchoffice.name }}</h2>
+            {% else %}
+            <div class="col-md-4 alert fade in alert-danger">
+                <h2>{{ workshop.branchoffice.name }}</h2>
+                <h4>Deshabilitado</h4>
+            {% endif %}
+                {% if workshop.description %}
+                    <p>{{ workshop.description }}</p>
+                {% else %}
+                    <p>Taller sin descripcion</p>
+                {% endif %}
+                <p>
+                    <a class="btn btn-primary"
+                       href="{{ workshop.get_absolute_url }}/cars/"
+                       role="button">Ver autos &raquo;
+                    </a>
+                    {% if user.is_admin %}
+                        {% if workshop.is_active %}
+                        <a class="btn btn-danger"
+                        href="{{ workshop.get_absolute_url }}/disabled/"
+                        role="button">Deshabilitar Taller &raquo;
+                        </a>
+                        {% else %}
+                        <a class="btn btn-success"
+                        href="{{ workshop.get_absolute_url }}/enabled/"
+                        role="button">Habilitar Taller &raquo;
+                        </a>
+                        {% endif %}
+                    {% endif %}
+                </p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

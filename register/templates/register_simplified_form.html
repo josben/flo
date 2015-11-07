@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block content %}
+<form action="{% url 'form_register_simplified_car' %}" method="post" role="form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+        {{ form.integra }} Integra
+    </div>
+    <div class="form-group">
+        {{ form.car.errors }}
+      <label for="id_subject">Interno del vehiculo:</label>
+      {{ form.car }}
+    </div>
+    <div class="form-group">
+      {{ form.employee.errors }}
+      <label for="id_subject">Item conductor:</label>
+      {{ form.employee }}
+    </div>
+    <div class="form-group">
+      {{ form.km.errors }}
+      <label for="id_subject">Kilometraje:</label>
+      {{ form.km }}
+    </div>
+    <div class="form-group">
+      {{ form.ladders.errors }}
+      <label for="id_subject">Escaleras:</label>
+      {{ form.ladders }}
+    </div>
+    <button type="button" class="alert alert-info" data-toggle="collapse" data-target="#observation">
+    Observaciones
+    </button>
+    <div id="observation" class="collapse">
+        {{ form.observation }}
+    </div>
+    </br>
+   <input type="submit" value="Registrar" class="btn btn-primary"/>
+  </form>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <!-- ul class="nav nav-list">
+        <li class="nav-header">{% trans "Opciones" %}</li>
+    </ul -->
+{% endblock %}
+
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block main-content %}
+<h4>Editar los valores del Vehiculo {{ car.internal_number }}</h4>
+<form action="{{ url }}/edit/" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group" id="div_message">
+    </div>
+    <div class="form-group">
+      {{ form.branchoffice.errors }}
+      <label for="id_subject">Oficina:</label>
+      {{ form.branchoffice }}
+    </div>
+    <div class="form-group">
+      {{ form.type_motorized.errors }}
+      <label for="id_subject">Tipo de Vehiculo:</label>
+      {{ form.type_motorized }}
+    </div>
+    <div class="form-group">
+        {{ form.internal_number.errors }}
+        <label for="id_subject">Numero de item:</label>
+        {{ form.internal_number }}
+    </div>
+    <div class="form-group">
+        {{ form.date_joined.errors }}
+        <label for="id_subject">Fecha de creacion:</label>
+        {{ form.date_joined }}
+    </div>
+    <div class="form-group">
+        {{ form.traction.errors }}
+        <label for="id_subject">Traccion:</label>
+        {{ form.traction }}
+    </div>
+    <div class="form-group">
+      {{ form.license_plate.errors }}
+      <label for="id_subject">Placa de control:</label>
+      {{ form.license_plate }}
+    </div>
+    <div class="form-group">
+      {{ form.model_year.errors }}
+      <label for="id_subject">Modelo:</label>
+      {{ form.model_year }}
+    </div>
+    <div class="form-group">
+      {{ form.manufacturer.errors }}
+      <label for="id_subject">Marca:</label>
+      {{ form.manufacturer }}
+    </div>
+    <div class="form-group">
+      {{ form.color.errors }}
+      <label for="id_subject">Color:</label>
+      {{ form.color }}
+    </div>
+    <div class="form-group">
+      {{ form.cylinder_capacity.errors }}
+      <label for="id_subject">Cilindrada:</label>
+      {{ form.cylinder_capacity }}
+    </div>
+    <div class="form-group">
+      {{ form.number_engine.errors }}
+      <label for="id_subject">Numero de motor:</label>
+      {{ form.number_engine }}
+    </div>
+    <div class="form-group">
+      {{ form.chassis.errors }}
+      <label for="id_subject">Chasis:</label>
+      {{ form.chassis }}
+    </div>
+    <div class="form-group">
+      {{ form.current_km.errors }}
+      <label for="id_subject">Kilometraje actual:</label>
+      {{ form.current_km }}
+    </div>
+    <div class="form-group">
+      {{ form.revert_km.errors }}
+      <label for="id_subject">El reloj del Kilometraje volvio a empezar</label>
+      {{ form.revert_km }}
+    </div>
+    <div class="form-group">
+        {{ form.is_active.errors }}
+      <label for="id_subject">El auto es alquilado:</label>
+      {{ form.is_active }}
+    </div>
+    <div class="form-group">
+        {{ form.is_active.errors }}
+      <label for="id_subject">El auto esta activo:</label>
+      {{ form.is_active }}
+    </div>
+    <div class="form-group">
+      {{ form.observation.errors }}
+      <label for="id_subject">Observaciones:</label>
+      {{ form.observation }}
+    </div>
+
+    <input type="submit" value="Guardar" class="btn btn-primary"/>
+</form>
+{% endblock%}
+

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+<img src="{{ employee.staff.photo.url_90x90}}" width="90" height="90" alt="" />
+<p>Nombre:</p> {{ employee.staff.full_name }}
+<p>Item:</p> {{ employee.item }}
+{% endblock %}

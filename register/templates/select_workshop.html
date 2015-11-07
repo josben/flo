@@ -1,0 +1,24 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block main-content %}
+<h4>El vehiculo {{ car }} se lleva al taller:</h4>
+<form action="{{ url }}" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+      {{ form.workshop.errors }}
+      <label for="id_subject">Taller:</label>
+      {{ form.workshop }}
+    </div>
+    <input type="submit" value="Guardar" class="btn btn-primary"/>
+</form>
+{% endblock%}

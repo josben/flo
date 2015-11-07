@@ -1,0 +1,11 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+from staff.models import Staff
+
+from django.utils.translation import ugettext as _
+
+
+class User(AbstractUser):
+    staff = models.ForeignKey(Staff, unique=True, related_name=_('staff'), blank=True, null=True)
+

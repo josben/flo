@@ -1,0 +1,101 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+    <!-- ul class="nav nav-list">
+        <li class="nav-header">{% trans "Opciones" %}</li>
+    </ul -->
+{% endblock %}
+
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block main-content %}
+<div class="bs-callout bs-callout-warning">
+    <h4>Formulario para Reportes</h4>
+</div>
+  <form action="{% url 'report' %}" method="GET">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group" id="div_message">
+    </div>
+    <div class="form-group">
+    {{ form.export_to.errors }}
+    <label for="id_subject">Exportar a:</label>
+    {{ form.export_to }}
+    </div>
+    <div class="form-group">
+    {{ form.registers.errors }}
+    <label for="id_subject">Registros de:</label>
+    {{ form.registers }}
+    </div>
+    <div class="form-group">
+        {{ form.branchoffice.errors }}
+        <label for="id_subject">Parqueo:</label>
+        {{ form.branchoffice }}
+    </div>
+    <ul class="nav nav-pills nav-stacked">
+        <li class="active">
+            <a href="#" data-toggle="collapse" data-target="#register_date_collapse">
+                Introdusca una fecha para emitir el reporte
+            </a>
+            {{ form.report_date.errors }}
+            <div class="collapse" id="register_date_collapse">
+                <div class="form-group alert fade in alert-info">
+                    {{ form.report_date.errors }}
+                    <label for="id_subject">Fecha de Reporte:</label>
+                    {{ form.report_date }}
+                </div>
+            </div>
+        </li>
+        <li class="active">
+            <a href="#" data-toggle="collapse" data-target="#register_date_interval_collapse">
+                Introdusca una fecha inicial y final para el reporte
+            </a>
+            <div class="collapse" id="register_date_interval_collapse">
+                <div class="form-group alert fade in alert-info">
+                    <div class="form-group">
+                        {{ form.report_date_start.errors }}
+                        <label for="id_subject">Fecha de inicio:</label>
+                        {{ form.report_date_start }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.report_date_end.errors }}
+                        <label for="id_subject">Fecha fin:</label>
+                        {{ form.report_date_end }}
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="active">
+            <a href="#" data-toggle="collapse" data-target="#filter_by_collapse">
+                Filtrar por:
+            </a>
+            <div class="collapse" id="filter_by_collapse">
+                <div class="form-group alert fade in alert-info">
+                    <div class="form-group">
+                        {{ form.item_employee.errors }}
+                        <label for="id_subject">Item del conductor:</label>
+                        {{ form.item_employee }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.item_car.errors }}
+                        <label for="id_subject">Interno del Vehiculo:</label>
+                        {{ form.item_car }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.ci_guest.errors }}
+                        <label for="id_subject">CI - Visita:</label>
+                        {{ form.ci_guest }}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    </br>
+    <input type="submit" value="Exportar" class="btn btn-primary"/>
+</form>
+{% endblock%}
+

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+
+{% block content %}
+<h4>Vehiculos en Taller</h4>
+<div class="row">
+    <div class="col-xs-4">
+        <form method="GET"
+                action="{% url 'search_workshop_by_car' %}" 
+                class="form-inline" role="form">{% csrf_token %}
+            <input type='text'
+                    id='id_car' name='car'
+                    autocomplete='off'
+                    class="form-control" placeholder="Interno de Vehiculo" />
+            <button type='submit' class="btn btn-default">
+                Buscar
+            </button>
+        </form>
+    </div>
+</div>
+</br>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td class="info"><b>Taller</b></td>
+            <td><b>Vehiculo</b></td>
+            <td><b>Origen</b></td>
+            <td><b>Fecha de ingreso</b></td>
+            <td><b>Fecha de salida</b></td>
+            <td><b>Problema</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate m_list 20 %}
+        {% for m in m_list %}
+            {% if m.fixed %}
+            <tr class="active" id="row_{{ m.id }}">
+            {% else %}
+            <tr class="danger" id="row_{{ m.id }}">
+            {% endif %}
+                <td class="info">{{ m.workshop }}</td>
+                <td>{{ m.car.internal_number }}</td>
+                <td>{{ m.register.branch_office }}</td>
+                <td>{{ m.date_joined|date:"d/m/Y" }}</td>
+                {% if m.fixed %}
+                    <td>{{ m.date_out|date:"d/m/Y" }}</td>
+                {% else %}
+                <td> --- </td>
+                {% endif %}
+                <td>{{ m.problem_description }}</td>
+                <td>
+                    {% if user.is_admin %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Opciones <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                            <a href="{{m.get_absolute_url }}/view/">
+                                    <span>Ver</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                        ---
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% paginate %}
+{% endblock %}

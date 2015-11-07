@@ -1,0 +1,50 @@
+
+<h4 align="center">Ultima salida</h4>
+
+<div align="center">
+  <img src="{{employee.staff.photo.url_90x90}}" width="90" height="90" alt="">
+</div>
+
+<h4>{{ employee }}</h4>
+<b>Item:</b> {{ employee.item }} </br>
+{% if employee.is_motorist %}
+  {% if alert_license %}
+    <div class="alert fade in  alert-danger">
+  {% else %}
+    <div class="alert fade in  alert-info">
+  {% endif %}
+      <b>Valides de la licencia:</b> {{ employee.get_motorist.expiration_date|date:"d/m/Y" }}
+    </div>
+{% else %}
+  <div class="alert fade in  alert-warning">
+    <p>No tiene registrado su licencia</p>
+  </div>
+{% endif %}
+<b>Fecha de registro:</b> {{ register.register_time.date }}</br>
+<b>Hora:</b> <span id="rtime">{{ register.register_time.time }}</span>
+<input type="hidden" value='{{ register.register_time|date:"Y-m-d" }}' id="rdate" />
+<input type="hidden" value='{{ register.register_time|date:"G:i:s" }}' id="rtime" />
+<h4>Vehiculo</h4>
+<b>Placa:</b> {{ car.license_plate }}</br>
+<b>Interno:</b> {{ car.internal_number }}</br>
+<b>Kilometraje</b> <span id="last_km">{{ car.current_km }}</span></br>
+
+{% if in_moving %}
+  <div class="alert fade in  alert-danger">
+    <b>Estado:</b> En movimiento</br>
+    <b>Salio:</b> De {{ parking }}
+  </div>
+  <input type="hidden" value="retorno" id="event_car" />
+  {% if in_workshop %}
+    <input type="hidden" value="workshop" id="workshop" />
+  {% endif %}
+{% else %}
+  <div class="alert fade in  alert-info">
+    <b>Estado:</b> Parqueado</br>
+    <b>Parqueo:</b> {{ parking }}
+  </div>
+  <input type="hidden" value="salida" id="event_car" />
+{% endif%}
+
+<a href="{{ edit_register_url }}/edit/" class="btn btn-primary">Editar Registro</a>
+

@@ -1,0 +1,92 @@
+
+{% extends "subnav_base.html" %}
+
+{% block sidebar %}
+    <ul class="nav nav-list">
+      <li class="nav-header">
+      {% if register.is_complete %}
+          <a href="{{ register.register_out.get_absolute_url }}/edit">Editar Registro de Salida</a>
+          <a href="{{ register.register_in.get_absolute_url }}/edit">Editar Registro de Retorno</a>
+      {% else %}
+          <a href="{{ register.register_out.get_absolute_url }}/edit">Editar Registro de Salida</a>
+      {% endif %}
+      </li>
+    </ul>
+{% endblock %}
+
+{% block main-content %}
+    {% if register.is_complete %}
+        <div class="row">
+        {% if register.custody_out == register.custody_in %}
+            <div class="col-md-6 alert fade in alert-info" align="center">
+                <h2>{{ register.custody_out.staff }}</h2>
+                <img src="{{ register.custody_out.staff.photo.url_90x90}}"
+                     width="90" height="90" alt="" />
+                {% if register.custody_out.is_motorist %}</br>
+                <b>Valides de licencia:</b>
+                {{ register.custody_out.get_motorist.expiration_date }}</br>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <b>Interno del vehiculo:</b> {{ register.car }}</br>
+                <b>Parqueo de salida:</b> {{ register.parking_out }}</br>
+                <b>Parqueo de retorno:</b> {{ register.parking_in }}</br>
+                <b>Fecha de registro:</b> {{ register.register_date }}</br>
+                <b>Hora de salida:</b> {{ register.time_out.time }}</br>
+                <b>Hora de retorno:</b> {{ register.time_in.time }}</br>
+                <b>Kilometraje de salida:</b> {{ register.km_out }}</br>
+                <b>Kilometraje de retorno:</b> {{ register.km_in }}</br>
+                <b>Escaleras de salida:</b> {{ register.ladders_out }}</br>
+                <b>Escaleras de retorno:</b> {{ register.ladders_in }}</br>
+                <b>Observaciones:</b> {{ register.observation }}</br>
+            </div>
+        {% else %}
+            <div class="col-md-6 alert fade in alert-info" align="center">
+                <h2>{{ register.custody_out.staff }}</h2>
+                <img src="{{register.custody_out.staff.photo.url_90x90}}"
+                     width="90" height="90" alt=""></br>
+                <b>Conductor de salida</b>
+                {% if register.custody_out.is_motorist %}</br>
+                <b>Valides de licencia:</b>
+                {{ register.custody_out.get_motorist.expiration_date }}</br>
+                {% endif %}
+                <h2>{{ register.custody_in.staff }}</h2>
+                <img src="{{register.custody_in.staff.photo.url_90x90}}"
+                     width="90" height="90" alt=""></br>
+                <b>Conductor de retorno</b>
+                {% if register.custody_out.is_motorist %}</br>
+                <b>Valides de licencia:</b> {{ register.custody_in.get_motorist.expiration_date }}</br>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <b>Interno del vehiculo:</b> {{ register.car }}</br>
+                <b>Parqueo de salida:</b> {{ register.parking_out }}</br>
+                <b>Parqueo de retorno:</b> {{ register.parking_in }}</br>
+                <b>Fecha de registro:</b> {{ register.register_date }}</br>
+                <b>Hora de salida:</b> {{ register.time_out.time }}</br>
+                <b>Hora de retorno:</b> {{ register.time_in.time }}</br>
+                <b>Kilometraje de salida:</b> {{ register.km_out }}</br>
+                <b>Kilometraje de retorno:</b> {{ register.km_in }}</br>
+                <b>Escaleras de salida:</b> {{ register.ladders_out }}</br>
+                <b>Escaleras de retorno:</b> {{ register.ladders_in }}</br>
+                <b>Observaciones:</b> {{ register.observation }}</br>
+            </div>
+        </div>
+        {% endif %}
+    {% else %}
+        <div align="center">
+            <img src="{{register.custody_out.staff.photo.url_200x200}}" width="200" height="200" alt="">
+        </div>
+        <b>Nombre del conductor:</b> {{ register.custody_out }}</br>
+        {% if register.custody_out.is_motorist %}</br>
+        <b>Valides de licencia:</b> {{ register.custody_out.get_motorist.expiration_date }}</br>
+        {% endif %}
+        <b>Interno del vehiculo:</b> {{ register.car }}</br>
+        <b>Parqueo de salida:</b> {{ register.parking_out }}</br>
+        <b>Fecha de registro:</b> {{ register.register_date }}</br>
+        <b>Hora de salida:</b> {{ register.time_out.time }}</br>
+        <b>Kilometraje de salida:</b> {{ register.km_out }}</br>
+        <b>Escaleras de salida:</b> {{ register.ladders_out }}</br>
+        <b>Observaciones:</b> {{ register.observation }}</br>
+    {% endif %}
+{% endblock %}

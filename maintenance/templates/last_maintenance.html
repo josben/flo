@@ -1,0 +1,13 @@
+
+<div class="alert fade in alert-info">
+  <b>Fecha del ultimo mantenimiento:</b>
+  {{ last_maintenance.date_out|date:"d/m/Y" }}</br>
+  <b>Kilometraje:</b> {{ last_maintenance.register.register_km }}</br>
+  <b>Chofer que ingreso</b>
+  <div align="center">
+    <img src="{{last_maintenance.register.employee.staff.photo.url_90x90}}" width="90" height="90" alt="">
+  </div>
+  {{ last_maintenance.register.employee }}</br>
+  <b>Item:</b> {{ last_maintenance.register.employee.item }}</br>
+  <b>Kilometraje Actual:</b> {{ car.current_km }}
+</div>

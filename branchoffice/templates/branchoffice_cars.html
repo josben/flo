@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block navbar %}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Oficinas <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/cars/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Guardias <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'branchoffice' %}">Inicio</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'show_guards_enabled' %}">Ver solo habilitados</a></li>
+        <li><a href="{% url 'show_guards_all' %}">Ver todos</a></li>
+        <li class="divider"></li>
+        {% for office in bo_list %}
+        <li>
+            <a href="{{office.get_absolute_url }}/guards/">
+                <span>{{ office.name }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+<li class="dropdown">
+    <a href="{% url 'list_all_car' %}">Todos los autos</a>
+</li>
+{% endblock%}
+
+{% block content %}
+<h4>Parqueo {{ office }}</h4>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <td class="info"><b>Interno</b></td>
+            <td><b>Placa</b></td>
+            <td><b>Tipo</b></td>
+            <td><b>Modelo</b></td>
+            <td><b>Marca</b></td>
+            <td><b>Kilometraje</b></td>
+            <td><b>Parqueo</b></td>
+            <td><b>Opciones</b></td>
+        </tr>
+        {% autopaginate cars 20 %}
+        {% for car in cars %}
+            {% if car.is_active %}
+            <tr class="active" id="row_{{ car.id }}">
+            {% else %}
+            <tr class="warning" id="row_{{ car.id }}">
+            {% endif %}
+                <td class="info">{{ car.internal_number }}</td>
+                <td>{{ car.license_plate }}</td>
+                <td>{{ car.type_motorized.name }}</td>
+                <td>{{ car.model_year }}</td>
+                <td>{{ car.manufacturer }}</td>
+                <td>{{ car.current_km }}</td>
+                <td>
+                    {% if user.is_admin %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ office }} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% for office in bo_list %}
+                            <li>
+                            <a href="{{office.get_absolute_url }}/car/{{car.id}}/"
+                               onclick="removeRow({{car.id}});">
+                                    <span>{{ office.name }}</span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% else %}
+                        {{ office }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_admin and car.is_active %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Opciones<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/disabled/">
+                                    <span>Deshabilitar</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/delete/">
+                                    <span>Borrar</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/edit/">
+                                    <span>Editar</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/view/">
+                                    <span>Ver</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% elif user.is_admin and not car.is_active%}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Opciones<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/enabled/">
+                                    <span>Habilitar</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/delete/">
+                                    <span>Borrar</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="{{ car.get_absolute_url }}/edit/">
+                                    <span>Editar</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                        <b> --- </b>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% paginate %}
+<script>
+    function removeRow(car) {
+        $('#row_'+car).remove();
+    }
+</script>
+{% endblock %}

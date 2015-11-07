@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+    <!-- a href="{% url "upload_staff" %}">Cargar el personal</a>
+    <a href="{% url "upload_driver" %}">Cargar a los conductores de vehiculos</a -->
+        <h2>Conductores de Vehiculos</h2>
+    <div class="row">
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_motorist_by_item' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_item' name='item' autocomplete='off'
+                  class="form-control" placeholder="Item Empleado" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_motorist_by_name_employee' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text' id='id_employee' name='employee' autocomplete='off'
+                  class="form-control" placeholder="Nombre del Empleado" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+    </br>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <td><b></b></td>
+                <td><b>Item</b></td>
+                <td><b>Nombre</b></td>
+                <td><b>Categoria</b></td>
+                <td><b>Valides de licencia</b></td>
+                {% if user.is_admin %}
+                    <td><b>Opciones</b></td>
+                {% endif %}
+            </tr>
+            {% autopaginate motorist_list 15 %}
+            {% for motorist in motorist_list %}
+                {% if motorist.license_is_active %}
+                <tr class="active">
+                {% else %}
+                <tr class="danger">
+                {% endif %}
+                    <td>
+                        <img src="{{motorist.employee.staff.photo.url_48x48}}" width="48" height="48" alt="" />
+                    </td>
+                    <td>{{ motorist.employee.item }}</td>
+                    <td>{{ motorist.employee }}</td>
+                    <td>{{ motorist.driver_category }}</td>
+                    <td>{{ motorist.expiration_date|date:"d/m/Y" }}</td>
+                    {% if user.is_admin %}
+                    <td><a href='{{ motorist.get_absolute_url }}/update/'>Actualizar</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% paginate %}
+
+{% endblock %}

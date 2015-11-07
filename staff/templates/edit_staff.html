@@ -1,0 +1,94 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block navbar_right %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Opciones <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="{% url 'new_workunit' %}">
+                <span>{% trans 'Crear nueva Unidad de Trabajo'%}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'new_company' %}">
+                <span>{% trans 'Crear una nueva empresa'%}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block main-content %}
+<h4>Editando los datos de {{ staff }}</h4>
+<form action="{{ staff.get_absolute_url }}/edit/" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group" id="div_message">
+    </div>
+    <div class="form-group">
+      {{ form.first_name.errors }}
+      <label for="id_subject">Nombre:</label>
+      {{ form.first_name }}
+    </div>
+    <div class="form-group">
+      {{ form.last_name.errors }}
+      <label for="id_subject">Apellido:</label>
+      {{ form.last_name }}
+    </div>
+    <div class="form-group">
+        {{ form.type_document.errors }}
+        <label for="id_subject">Tipo de documento:</label>
+        {{ form.type_document }}
+    </div>
+    <div class="form-group">
+        {{ form.val_document.errors }}
+        <label for="id_subject">Numero de documento:</label>
+        {{ form.val_document }}
+    </div>
+    <div class="form-group">
+      {{ form.locale_issue.errors }}
+      <label for="id_subject">Lugar:</label>
+      {{ form.locale_issue }}
+    </div>
+    <div class="form-group">
+        {{ form.locale_issue_other.errors }}
+        <label for="id_subject">Documento extranjero:</label>
+        {{ form.locale_issue_other }}
+    </div>
+    <div class="form-group">
+      {{ form.birth_date.errors }}
+      <label for="id_subject">Fecha de nacimiento:</label>
+      {{ form.birth_date }}
+    </div>
+    <div class="form-group">
+      {{ form.gender.errors }}
+      <label for="id_subject">Sexo:</label>
+      {{ form.gender }}
+    </div>
+    <div class="form-group">
+      {{ form.number_phone.errors }}
+      <label for="id_subject">Numero de telefono:</label>
+      {{ form.number_phone }}
+    </div>
+    <div class="form-group">
+      {{ form.photo.errors }}
+      <label for="id_subject">Foto:</label>
+      {{ form.photo }}
+    </div>
+    <div class="form-group">
+      {{ form.about.errors }}
+      <label for="id_subject">Algo acerca de el:</label>
+      {{ form.about }}
+    </div>
+    <input type="submit" value="Guardar" class="btn btn-primary"/>
+</form>
+{% endblock%}
+

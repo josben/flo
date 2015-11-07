@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+
+{% load i18n static %}
+{% load bootstrap_toolkit %}
+{% load url from future %}
+{% load static from staticfiles%}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>flosite</title>
+    <meta name="description" content="">
+    <meta name="author" content="Dylan Verheul">
+    {% bootstrap_stylesheet_tag %}
+    {% bootstrap_stylesheet_tag "responsive" %}
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+      <script type='application/javascript' src="{% static 'js/jquery.min.js' %}"></script>
+      <script type='application/javascript' src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script type='application/javascript' src="{% static 'js/jquery.timepicker.js' %}"></script>
+      <script type='application/javascript' src="{% static 'js/flosite.js' %}"></script>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-responsive.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.timepicker.css'%}" />
+      {% block extra_head %}
+        {{ form.media }}
+      {% endblock %}
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/">Flo</a>
+            <ul class="nav">
+                <!-- li><a href="{% url 'home' %}" class="">Inicio</a></li -->
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Formularios<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'form_register_car' %}"><span>{% trans 'Registro de Vehiculos'%}</span></a></li>
+                      <li><a href="{% url 'form_register_simplified_car' %}"><span>{% trans 'Registro simplificado'%}</span></a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav pull-right">
+              {% if user.is_authenticated %}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    {% if user.is_admin %}
+                      <li><a href="{% url 'admin:index' %}">Administrador</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'userena_profile_detail' user.username %}"><span>{% trans 'Mi perfil' %}</span></a></li>
+                    <li><a href="{% url 'userena_profile_list' %}"><span>{% trans 'Ver todos los perfiles' %}</span></a></li>
+                    <li><a href="{% url 'userena_umessages_list' %}"><span>{% trans 'Mensajes' %}</span></a></li>
+                    <li><a href="{% url 'userena_signout' %}"><span>{% trans 'Salir' %}</span></a></li>
+                  </ul>
+                </li>
+              {% else %}
+                <li><a href="{% url 'userena_signin' %}"><span>{% trans 'Ingresar' %}</span></a></li>
+              {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    {% bootstrap_messages %}
+
+    {% block content %}Empty page{% endblock %}
+
+    <p><hr></p>
+
+    <footer class="row">
+        <div class="span6" style="text-align:right">
+            <p>
+                &copy; josben
+            </p>
+        </div>
+    </footer>
+
+</div> <!-- container -->
+
+</body>
+</html>

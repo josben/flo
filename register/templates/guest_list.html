@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+{% load pagination_tags %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+    <div class="row">
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_guest' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text'
+                    id='id_guest'
+                    name='guest'
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Ingrese nombre" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <form method="GET" action="{% url 'search_by_guest_ci' %}"
+                  class="form-inline" role="form">{% csrf_token %}
+                <input type='text'
+                    id='id_ci'
+                    name='ci'
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Numero de documento" />
+                <button type='submit' class="btn btn-default">
+                    Buscar
+                </button>
+            </form>
+        </div>
+
+    </div>
+    </br>
+    <table class="table">
+        <tr>
+            <td><b>Fecha</b></td>
+            <td><b>CI</b></td>
+            <td><b>Nombre</b></td>
+            <td><b>Ingreso</b></td>
+            <td><b>Salida</b></td>
+            <td><b>Motivo</b></td>
+        </tr>
+        {% autopaginate persons 10 %}
+        {% for row in persons %}
+            {% if row.time_out == Nil %}
+            <tr class="danger" id="tr_person_{{row.id}}">
+            {% else %}
+            <tr class="active" id="tr_person_{{row.id}}">
+            {% endif %}
+                <td>{{ row.register_date|date:"d/m/Y" }}</td>
+                <td>{{ row.guest.val_document }} - 
+                    {% if row.guest.issue_document == '---'%}
+                        {{ row.guest.type_document }}
+                    {% else %}
+                        {{ row.guest.issue_document }}
+                    {% endif %}
+                    </td>
+                <td>{{ row.guest }}</td>
+                <td>{{ row.time_entry|date:"G:i" }}</td>
+                <td>
+                    {% if row.time_out == Nil %}
+                    <div id='stop_person_{{row.id}}'>
+                        <a class='btn btn-primary' href='javascript:stopTimePerson({{ row.id }})'>Parar</a>
+                    </div>
+                    {% else %}
+                        {{ row.time_out|date:"G:i" }}
+                    {% endif %}
+                </td>
+                <td>{{ row.reason }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% paginate %}
+{% endblock %}

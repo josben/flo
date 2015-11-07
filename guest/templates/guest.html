@@ -1,0 +1,8 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Registro de personas</h2>
+  <a href="{% url 'import_guest' %}">Importar personas</a>
+  <a href="{% url 'cleanCI_guest' %}">Limpiar documentos</a>
+{% endblock %}

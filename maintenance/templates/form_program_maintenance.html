@@ -1,0 +1,55 @@
+{% extends "subnav_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block navbar_right %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Opciones <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="{% url 'new_workshop' %}">
+                <span>{% trans 'Asignar nuevo taller'%}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block main-content %}
+  <form action="{% url 'form_maintenance_program' %}" method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+      {{ form.workshop.errors }}
+      <label for="id_subject">Taller:</label>
+      {{ form.workshop }}
+    </div>
+    <div class="form-group">
+      {{ form.internal_number.errors }}
+      <label for="id_subject">Interno del vehiculo:</label>
+      {{ form.internal_number }}
+    </div>
+    <div class="form-group">
+      {{ form.next_km_maintenance.errors }}
+      <label for="id_subject">Kilometraje limite para mantenimiento:</label>
+      {{ form.next_km_maintenance }}
+    </div>
+    <div class="form-group">
+        {{ form.next_date_maintenance.errors }}
+        <label for="id_subject">Fecha para el mantenimiento:</label>
+        {{ form.next_date_maintenance }}
+    </div>
+    <div class="form-group">
+      {{ form.reason.errors }}
+      <label for="id_subject">Motivo:</label>
+      {{ form.reason }}
+    </div>
+    <input type="submit" value="Guardar" class="btn btn-primary"/>
+</form>
+{% endblock%}
